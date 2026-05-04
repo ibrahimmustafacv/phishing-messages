@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>مرصد التصيد | احذر هذه الرسائل الاحتيالية</title>
+    <!-- Font Awesome 6 (أيقونات احترافية) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts: Cairo (عربية حديثة) -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: #f0f2f5;
+            color: #1e2a3e;
+            line-height: 1.5;
+            padding: 1rem;
+        }
+
+        /* الخلفية وتأثير الشبكة الخفيف */
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(#d0d7de 1px, transparent 1px);
+            background-size: 30px 30px;
+            opacity: 0.2;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* الهيدر - تحذيري وجذاب */
+        .header {
+            background: linear-gradient(135deg, #0a1c2f, #0a2b3c);
+            border-radius: 32px;
+            padding: 2rem 2rem 1.8rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: "⚠️";
+            font-size: 160px;
+            position: absolute;
+            left: -20px;
+            bottom: -40px;
+            opacity: 0.1;
+            pointer-events: none;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .header h1 i {
+            background: rgba(255,255,255,0.2);
+            padding: 10px;
+            border-radius: 60px;
+            font-size: 1.8rem;
+        }
+
+        .badge-header {
+            background: #ff4d4d;
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+
+        .sub {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-top: 12px;
+            border-right: 3px solid #f39c12;
+            padding-right: 15px;
+        }
+
+        /* تبويبات التصنيف */
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+        }
+
+        .tab-btn {
+            background: #fff;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            transition: all 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tab-btn i {
+            font-size: 1.1rem;
+        }
+
+        .tab-btn.active {
+            background: #1e3a5f;
+            color: white;
+            box-shadow: 0 8px 18px rgba(0, 51, 102, 0.2);
+        }
+
+        .tab-btn:not(.active):hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+
+        /* شبكة البطاقات */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 28px;
+            margin-top: 10px;
+        }
+
+        /* البطاقة الاحترافية */
+        .phish-card {
+            background: white;
+            border-radius: 28px;
+            overflow: hidden;
+            transition: all 0.25s ease;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .phish-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 30px rgba(0,0,0,0.12);
+        }
+
+        .card-header {
+            padding: 1rem 1.5rem;
+            background: #f8fafc;
+            border-bottom: 2px solid #eef2f6;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .platform {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            font-size: 1.1rem;
+        }
+
+        .platform i {
+            font-size: 1.7rem;
+        }
+
+        .platform.fb i { color: #1877f2; }
+        .platform.ig i { color: #d62976; }
+        .platform.email i { color: #ea4335; }
+        .platform.warning i { color: #e67e22; }
+
+        .copy-btn {
+            background: #eef2ff;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #1e3a5f;
+        }
+
+        .copy-btn:hover {
+            background: #1e3a5f;
+            color: white;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+            background: #ffffff;
+            flex: 1;
+        }
+
+        .message-preview {
+            background: #fef9e6;
+            border-right: 4px solid #f4b942;
+            padding: 1rem;
+            border-radius: 16px;
+            font-size: 0.95rem;
+            white-space: pre-wrap;
+            word-break: break-word;
+            color: #2c3e4e;
+            line-height: 1.6;
+            max-height: 280px;
+            overflow-y: auto;
+        }
+
+        .footer-card {
+            padding: 0.8rem 1.5rem 1.2rem;
+            border-top: 1px solid #edf2f7;
+            font-size: 0.75rem;
+            color: #7f8c8d;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .type-badge {
+            background: #e9ecef;
+            padding: 4px 10px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.7rem;
+        }
+
+        .toast-msg {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e2a3e;
+            color: white;
+            padding: 12px 26px;
+            border-radius: 60px;
+            font-weight: 500;
+            z-index: 1000;
+            box-shadow: 0 8px 20px black;
+            direction: ltr;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+
+        .toast-msg.show {
+            opacity: 1;
+        }
+
+        .warning-note {
+            background: #ffeed9;
+            border-radius: 24px;
+            padding: 1rem 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            border: 1px solid #ffd966;
+        }
+
+        @media (max-width: 700px) {
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            .tab-btn {
+                padding: 8px 18px;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="bg-pattern"></div>
+<div class="container">
+    <div class="header">
+        <h1><i class="fas fa-shield-hawk"></i> مرصد الاحتيال الرقمي</h1>
+        <div class="badge-header"><i class="fas fa-fish"></i> معرض رسائل التصيد الاحتيالي – تعلم كيف تتصدى</div>
+        <div class="sub">هذه النماذج حقيقية ومعدة للتوعية. احذر الروابط الخادعة والمعلومات المضللة. اضغط "نسخ" لمشاركة التحذير مع الآخرين.</div>
+    </div>
+
+    <div class="warning-note">
+        <div><i class="fas fa-exclamation-triangle" style="font-size: 1.8rem; color:#e67e22;"></i> <strong>تنبيه توعوي:</strong> جميع الرسائل المعروضة نماذج احتيالية، الغرض منها تثقيف المستخدمين وليس استخدامها في أي نشاط غير قانوني.</div>
+        <i class="fas fa-eye" style="font-size: 1.4rem; opacity:0.7;"></i>
+    </div>
+
+    <!-- تبويبات المنصات -->
+    <div class="tabs">
+        <button class="tab-btn active" data-filter="all"><i class="fas fa-globe"></i> الكل</button>
+        <button class="tab-btn" data-filter="facebook"><i class="fab fa-facebook"></i> فيسبوك</button>
+        <button class="tab-btn" data-filter="instagram"><i class="fab fa-instagram"></i> إنستجرام</button>
+        <button class="tab-btn" data-filter="email"><i class="fas fa-envelope"></i> بريد إلكتروني</button>
+        <button class="tab-btn" data-filter="whatsapp"><i class="fab fa-whatsapp"></i> واتساب + متنوع</button>
+    </div>
+
+    <div id="cardsContainer" class="cards-grid">
+        <!-- سيتم ملء البطاقات بواسطة الجافاسكريبت (رسائل المتطلبات + رسائل إضافية احترافية) -->
+    </div>
+</div>
+
+<div id="toastMessage" class="toast-msg">
+    <i class="fas fa-check-circle"></i> تم نسخ الرسالة إلى الحافظة
+</div>
+
+<script>
+    // قاعدة رسائل التصيد - تشمل ما طلبه المستخدم بالكامل + رسائل إضافية احترافية
+    const phishingMessages = [
+        // 1- فيسبوك (الرسالة المطلوبة الأولى)
+        { platform: "facebook", platformIcon: "fab fa-facebook", title: "تنبيه نشاط غير طبيعي", type: "إشعار أمني", 
+          content: `عزيزي مستخدم الفيس بوك،
+
+نود إبلاغك بأننا رصدنا نشاطًا غير طبيعي على حسابك في Facebook. لضمان أمان حسابك ومنع أي تعليق، يرجى تأكيد هويتك فورًا.
+
+الرجاء النقر على الرابط أدناه خلال 24 ساعة للتحقق من ملكيتك للحساب. إذا لم تقم بالتأكيد، فقد نقوم بتعليق حسابك بشكل مؤقت لحمايته من الوصول غير المصرح به.
+
+[https://configuring-critics-murphy-polls.trycloudflare.com]
+
+نقدر تعاونك للحفاظ على أمان مجتمعنا.
+إذا كنت بحاجة إلى مساعدة، يرجى الرد على هذه الرسالة أو زيارة مركز المساعدة.
+مع خالص التحيات،
+فريق دعم Facebook
+Meta Platforms, Inc.` },
+
+        // 2- انستجرام (رسالة لم نتلق تحققك)
+        { platform: "instagram", platformIcon: "fab fa-instagram", title: "التحقق من هويتك", type: "طلب تأكيد",
+          content: `عزيزي مستخدم إنستجرام, 
+
+نود إبلاغك أننا لم نتلق تحققك من خلال الرابط الآمن الذي أرسلناه سابقاً.
+الرجاء النقر على الرابط أدناه خلال 24 ساعة للتحقق من ملكيتك للحساب. إذا لم تقم بالتأكيد، فقد نقوم بتعليق حسابك بشكل مؤقت لحمايته من الوصول غير المصرح به.
+
+[https://2h.ae/instagram-support]
+
+نقدر تعاونك للحفاظ على أمان مجتمعنا.` },
+
+        // 3- انستجرام صلاحية منتهية + واتساب
+        { platform: "instagram", platformIcon: "fab fa-instagram", title: "انتهت صلاحية التحقق", type: "طلب واتساب",
+          content: `عزيزي مستخدم إنستجرام, 
+
+لقد أرسلنا لك مؤخراً رابطاً لتأكيد ملكية حسابك. يبدو أن رابط التحقق قد انتهت صلاحيته، أو أنك لم تكمّل عملية التحقق بنجاح.
+لحماية حسابك من التعليق التلقائي، نحتاج منك إكمال عملية التحقق من الهوية عبر ارسال رسالة علي الواتساب الخاص بافريق الدعم 
+
+إذا كنت بحاجة إلى مساعدة، يرجى الرد على هذه الرسالة أو زيارة مركز المساعدة.
+مع خالص التحيات،
+فريق دعم Instagram
+Meta Platforms, Inc.`},
+
+        // 4- تسجيل دخول جديد من جهاز غير معروف (ميت غمر)
+        { platform: "instagram", platformIcon: "fab fa-instagram", title: "دخول مشبوه", type: "تنبيه موقع",
+          content: `لقد تمّ تسجيل دخول جديد إلى حسابك على Instagram من جهاز غير معروف.
+📍 الموقع التقريبي: ميت غمر، مصر
+💻 نوع الجهاز: iPhone 13
+🕒 الوقت: 2 نوفمبر 2025 ، الساعة 11:43 مساء
+
+إذا كنت أنت من قمت بتسجيل الدخول، فلا حاجة لاتخاذ أي إجراء.
+أما إذا لم تكن أنت، فننصحك باتباع الخطوات التالية فورًا:
+
+الرجاء النقر على الرابط أدناه خلال 24 ساعة للتحقق من ملكيتك للحساب. إذا لم تقم بالتأكيد، فقد نقوم بتعليق حسابك بشكل مؤقت لحمايته من الوصول غير المصرح به.
+
+[https://2h.ae/instagram-Security] 
+
+لمزيد من المعلومات أو للمساعدة، يمكنك زيارة مركز المساعدة عبر الرابط التالي:
+help.instagram.com
+
+مع تحيات فريق Instagram Security`},
+
+        // 5- تأكيد معلومات حسابك (نرجو منك التكرم)
+        { platform: "instagram", platformIcon: "fab fa-instagram", title: "تأكيد البيانات", type: "تحقق عاجل",
+          content: `نرجو منك التكرم بتأكيد معلومات حسابك والتحقق منها لضمان استمرار الخدمة بشكل آمن وسلس.
+يرجى الضغط على الرابط التالي لإتمام عملية التحقق:
+[https://h7.cl/Instagramsupport]
+
+شكرًا لتعاونك،
+فريق دعم Instagram`},
+
+        // 6- معلومات غير صحيحة (رسالة تصيد مع بيانات خاطئة)
+        { platform: "instagram", platformIcon: "fab fa-instagram", title: "بيانات غير صحيحة", type: "طلب تحديث",
+          content: `عزيزي المستخدم،
+
+نود إعلامك أن المعلومات الحسابية التي تم إدخالها غير صحيحة. يرجى العلم أنه يتوجب عليك تحديث بياناتك الحقيقية عبر الرابط المخصص للتحقق أدناه في أقرب وقت ممكن:
+
+[https://2h.ae/instagram-Security ]
+
+تنفيذ هذه الخطوة ضروري للحفاظ على أمان حسابك. في حال عدم إكمال عملية التحقق، قد يتم تعليق أو إغلاق حسابك تلقائياً لحماية بياناتك.
+
+نشكرك على تفهمك وتعاونك.
+
+مع أطيب التحيات،
+[Instagram Security]`},
+
+        // 7 - رسالة خاصة جداً تتضمن معلومات خاطئة (تم إدخالها)
+        { platform: "instagram", platformIcon: "fab fa-instagram", title: "بيانات الدخول الخاطئة", type: "تحذير متقدم",
+          content: `عزيزي العميل،
+
+نود إبلاغكم أن المعلومات التي قمتم بإدخالها محاولاً تسجيل الدخول غير صحيحة. إليك تفاصيل المعلومات الخاطئة التي أدخلتها:
+اسم المستخدم: 01090082147
+كلمة المرور: love you too baby
+رمز OTP: 46892157
+
+الخطوات الصحيحة للتسجيل والتحقق:
+ادخل على الرابط الجديد من خلال الضغط هنا: [https://2h.ae/Instagram-support2]
+قم بتسجيل الدخول باستخدام بياناتك الصحيحة.
+ستنتقل تلقائياً إلى صفحة OTP:
+إذا استلمت رقماً، ادخله في الصفحة.
+إذا لم يصلك رمز، ادخل الرقم 0000.
+يجب البقاء في صفحة OTP لمدة 10 دقائق على الأقل حتى نتمكن من التحقق من بياناتك المسجلة بشكل صحيح.
+بعد اكتمال التحقق، سنرسل لك رسالة تؤكد مصداقية معلوماتك ونشطاء حسابك.
+إذا واجهتك أي مشاكل، يرجى التواصل معنا عبر الواتساب على الرقم: [أضف رقم الواتساب هنا].
+نشكركم على تعاونكم ونعتذر عن أي إزعاج.
+
+مع خالص التقدير،
+[Instagram Security]`},
+
+        // 8 - تأكيد اكتمال التحقق (رسالة تهدئة مزيفة)
+        { platform: "instagram", platformIcon: "fab fa-instagram", title: "تم تأمين حسابك", type: "خدعة اطمئنان",
+          content: `عزيزنا العميل،
+
+تم تأمين حسابك بنجاح والتحقق من هويتك بشكل كامل.
+
+نعتذر sincerely عن أي إزعاج قد يكون حدث أثناء عملية التحقق، وذلك حرصاً منا على سلامة حسابك وحماية بياناتك.
+
+نشكرك لصبرك وتعاونك، ونتمنى لك تجربة آمنة وممتعة معنا.
+
+لأي استفسار، نحن هنا لمساعدتك.
+
+فريق [Instagram Security]`},
+
+        // 9 - رسالة تصيد احترافية جديدة (فيسبوك - تحديث بيانات الدفع)
+        { platform: "facebook", platformIcon: "fab fa-facebook", title: "تعليق مؤقت للمدفوعات", type: "احتيال مالي",
+          content: `عزيزي المستخدم، تم تعليق إعدادات الدفع الخاصة بحسابك في فيسبوك بسبب عدم تطابق البيانات. الرجاء تأكيد معلومات بطاقتك الائتمانية عبر الرابط الآمن:
+
+[ https://faceb00k-security.pages.dev/verify-payment ]
+
+في حال عدم التحديث خلال 24 ساعة، سيتم حظر حسابك من الإعلانات والمدفوعات.
+شكرًا لتفهمك،
+Meta Payments`},
+
+        // 10 - بريد إلكتروني مُحترف (أبل ID)
+        { platform: "email", platformIcon: "fas fa-envelope", title: "Apple ID معلق", type: "بريد احتيالي",
+          content: `من: Apple Support <no-reply@appleid-security.com>
+الموضوع: تعليق حساب Apple ID الخاص بك
+
+عزيزي العميل، تم اكتشاف عدة محاولات فاشلة لتسجيل الدخول إلى حساب Apple ID الخاص بك. لحماية معلوماتك، قمنا بتعليق حسابك مؤقتًا.
+
+لإعادة تنشيط حسابك، يرجى النقر على الرابط الرسمي والتحقق من هويتك خلال 12 ساعة:
+[ https://appleid-verify.xyz/restore ]
+
+إذا لم تقم بذلك، سيتم إلغاء تنشيط حسابك نهائيًا.
+
+Apple Support` },
+
+        // 11 - بريد Microsoft / outlook
+        { platform: "email", platformIcon: "fas fa-envelope", title: "صندوق بريد ممتلئ", type: "احتيال تخزين",
+          content: `مرحبًا، تجاوزت مساحة التخزين المسموح بها لـ Outlook. سيتم حظر رسائلك الواردة بعد 24 ساعة.
+قم بترقية مساحتك عبر الرابط المرفق:
+[ https://outlook-storage.claims/upgrade ]
+
+شكراً لثقتك،
+فريق Microsoft 365`},
+
+        // 12 - واتساب – رسالة من "الدعم"
+        { platform: "whatsapp", platformIcon: "fab fa-whatsapp", title: "التحقق الثنائي", type: "انتحال واتساب",
+          content: `🚨 عزيزي مستخدم واتساب، رمز التحقق الثنائي الخاص بك يحتاج إلى التحديث. إذا لم تقم بتحديث رمز التحقق خلال 24 ساعة، سيتم تسجيل الخروج من حسابك.
+
+قم بالضغط على الرابط التالي لإعادة ضبط المصادقة: 
+[ https://wa-security.icu/verify ]
+
+فريق دعم واتساب الرسمي` },
+
+        // 13 - رسالة احتيال توظيف (لينكد إن)
+        { platform: "whatsapp", platformIcon: "fab fa-linkedin", title: "عرض وظيفي مغري", type: "تصيد توظيف",
+          content: `مرحبًا، فريق الموارد البشرية في شركة "بيتكوين بلس" معجب بسيرتك الذاتية. للحصول على المقابلة، يرجى تأكيد بياناتك عبر الرابط التالي وإرسال نسخة من بطاقتك الشخصية:
+
+[ https://hiring-bait.pages.dev/verify ]
+
+مع تحيات قسم التوظيف.`},
+
+        // 14 - فيسبوك رسالة إعادة إخبار بالتنبيه (إجراء عاجل)
+        { platform: "facebook", platformIcon: "fab fa-facebook", title: "تأكيد ثانوي عاجل", type: "إعادة تنبيه",
+          content: `عزيزي المستخدم، نود إعادة إشعارك بأن حسابك معرض للحظر النهائي. قم بتأكيد هويتك فورًا عبر نموذج الأمان:
+
+[ https://fb-security-alert.net/confirm ]
+
+فريق سلامة الحسابات، Facebook` },
+        
+        // 15 - رسالة تنبيه "تم التنبيه" (نمط توعوي)
+        { platform: "instagram", platformIcon: "fab fa-instagram", title: "تم رصد محاولة تصيد", type: "تنبيه احتيالي",
+          content: `🔐 تنبيه أمني: لقد قمنا بحظر محاولة تصيد على حسابك. ولكن لتأكيد هويتك يجب عليك دخول الرابط التالي وتحديث كلمة السر. تجاهل هذه الرسالة يعني إغلاق الحساب خلال ٣ ساعات.
+
+[ https://ig-security-checkpoint.xyz/resolve ]
+
+شكراً، إدارة أمن إنستجرام` },
+
+        // 16 - رسالة بريدية من البنك (احتيال مصرفي)
+        { platform: "email", platformIcon: "fas fa-university", title: "بنك مصر - تحديث بيانات", type: "خدعة بنكية",
+          content: `عميلنا العزيز، تم تعليق خدمة الإنترنت البنكي بسبب عدة محاولات خاطئة. يرجى تحديث بياناتك عبر البوابة الإلكترونية الجديدة:
+
+[ https://banque-misr-secure.xyz/update ]
+
+مع عدم التحديث سيتم تجميد الحساب. 
+دعم العملاء - بنك مصر` },
+    ];
+
+    // إضافة رسائل إضافية احترافية من عندي (تحتوي على صور رمزية وأساليب متطورة)
+    const extraProMessages = [
+        { platform: "facebook", platformIcon: "fab fa-facebook", title: "تهيئة الحماية", type: "ثغرة وهمية",
+          content: `عزيزي العضو، فريق الأمان رصد ثغرة أمنية في جلسة تسجيل الدخول الخاصة بك. الرجاء تأكيد معلوماتك عبر الرابط التالي خلال ساعة واحدة فقط لتجنب تعطيل الحساب.
+
+[https://face-security-meta.xyz/verify-now]
+
+نأسف على الإزعاج،
+Meta Security Center` },
+        { platform: "instagram", platformIcon: "fab fa-instagram", title: "مشكلة في المصادقة", type: "تحذير فوري",
+          content: `❗ عاجل : لقد تلقينا إشعارًا بأن شخصًا ما يحاول تغيير عنوان البريد الإلكتروني لحسابك. إذا لم تقم بذلك، يرجى إلغاء الطلب عبر الرابط التالي:
+
+[ https://insta-alerts.net/cancel-request ]
+
+Instagram Trust & Safety` },
+        { platform: "email", platformIcon: "fas fa-gem", title: "عرض حصري من Dropbox", type: "فخ التخزين",
+          content: `تهانينا! تم ترقية حسابك إلى Dropbox Professional مجانًا لمدة عام. يلزم تفعيل العرض خلال 24 ساعة من خلال تأكيد بيانات الدفع (لن يتم خصم أي مبلغ).
+
+[ https://dropbox-offers.xyz/claim ]
+
+فريق العروض` },
+        { platform: "whatsapp", platformIcon: "fab fa-whatsapp", title: "تحديث سياسة الخصوصية", type: "احتيال قانوني",
+          content: `هام: تم تحديث شروط الخدمة وسياسة الخصوصية لـ WhatsApp، يرجى الموافقة من خلال الرابط أدناه خلاف ذلك لن تتمكن من استخدام التطبيق بعد 48 ساعة.
+
+[ https://wa-policy-update.xyz/accept ]
+
+WhatsApp Team.` }
+    ];
+
+    // دمج الكل
+    const allMessages = [...phishingMessages, ...extraProMessages];
+
+    // وظيفة عرض البطاقات مع الفلتر
+    function renderCards(filterValue = "all") {
+        const container = document.getElementById("cardsContainer");
+        if (!container) return;
+        let filtered = allMessages;
+        if (filterValue !== "all") {
+            filtered = allMessages.filter(msg => msg.platform === filterValue);
+        }
+        if (filtered.length === 0) {
+            container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding: 60px;"><i class="fas fa-search" style="font-size: 3rem; opacity:0.5;"></i><p>لا توجد رسائل في هذا التصنيف</p></div>`;
+            return;
+        }
+        
+        container.innerHTML = filtered.map((msg, idx) => {
+            let platformClass = "";
+            if (msg.platform === "facebook") platformClass = "fb";
+            else if (msg.platform === "instagram") platformClass = "ig";
+            else if (msg.platform === "email") platformClass = "email";
+            else platformClass = "warning";
+            
+            // اختصار الايقونات
+            let iconHtml = `<i class="${msg.platformIcon}"></i>`;
+            if (msg.platform === "whatsapp") iconHtml = `<i class="fab fa-whatsapp"></i>`;
+            if (msg.platform === "email" && msg.platformIcon === "fas fa-university") iconHtml = `<i class="fas fa-university"></i>`;
+            if (msg.platform === "email" && msg.title.includes("Dropbox")) iconHtml = `<i class="fab fa-dropbox"></i>`;
+            if (msg.platform === "whatsapp" && msg.platformIcon === "fab fa-linkedin") iconHtml = `<i class="fab fa-linkedin"></i>`;
+            
+            return `
+            <div class="phish-card" data-platform="${msg.platform}">
+                <div class="card-header">
+                    <div class="platform ${platformClass}">
+                        ${iconHtml}
+                        <span>${msg.platform === "facebook" ? "فيسبوك" : msg.platform === "instagram" ? "إنستغرام" : msg.platform === "email" ? "البريد الإلكتروني" : msg.platform === "whatsapp" ? "واتساب / متنوع" : "منصة أخرى"}</span>
+                    </div>
+                    <button class="copy-btn" data-msg-index="${idx}" data-fulltext="${escapeHtml(msg.content)}">
+                        <i class="far fa-copy"></i> نسخ
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                        <strong style="font-size: 1.2rem;">${escapeHtml(msg.title)}</strong>
+                        <span class="type-badge">${escapeHtml(msg.type)}</span>
+                    </div>
+                    <div class="message-preview">
+                        ${escapeHtml(msg.content).replace(/\n/g, '<br>')}
+                    </div>
+                </div>
+                <div class="footer-card">
+                    <span><i class="fas fa-shield-alt"></i> نموذج توعوي</span>
+                    <span><i class="fas fa-fish"></i> #احترس_من_التصيد</span>
+                </div>
+            </div>
+            `;
+        }).join('');
+        
+        // إعادة ربط أحداث النسخ بعد الرندر
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const fullText = btn.getAttribute('data-fulltext');
+                if (fullText) {
+                    navigator.clipboard.writeText(fullText).then(() => {
+                        showToast();
+                    }).catch(() => {
+                        alert("حدث خطأ، يمكنك نسخ النص يدويًا");
+                    });
+                } else {
+                    // محاولة الحصول من النص المجاور
+                    const previewDiv = btn.closest('.phish-card')?.querySelector('.message-preview');
+                    if(previewDiv) {
+                        let raw = previewDiv.innerText;
+                        navigator.clipboard.writeText(raw).then(showToast);
+                    }
+                }
+            });
+        });
+    }
+
+    // دالة لعرض الإشعار
+    let toastTimeout;
+    function showToast() {
+        const toast = document.getElementById("toastMessage");
+        if (!toast) return;
+        clearTimeout(toastTimeout);
+        toast.classList.add("show");
+        toastTimeout = setTimeout(() => {
+            toast.classList.remove("show");
+        }, 2000);
+    }
+
+    // دالة لتجنب XSS
+    function escapeHtml(str) {
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+            return c;
+        });
+    }
+
+    // التبويبات dynamic
+    function initTabs() {
+        const btns = document.querySelectorAll('.tab-btn');
+        btns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const filter = btn.getAttribute('data-filter');
+                btns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                renderCards(filter);
+            });
+        });
+    }
+
+    // تحميل أولي
+    renderCards('all');
+    initTabs();
+</script>
+</body>
+</html>
